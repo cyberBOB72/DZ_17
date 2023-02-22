@@ -74,7 +74,7 @@ class MovieView(Resource):
         movies = Movie.query.get(mid)
         if not movie:
             return '', 404
-        return movie_schema.dump(movies), 200
+        return movie_schema.dump(movie), 200
     
 
 
