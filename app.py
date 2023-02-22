@@ -33,6 +33,49 @@ class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
 
+    
+class MovieSchema(Schema):
+    id = fields.Int()
+    title = fields.Str()
+    description = fields.Str()
+    trailer = fields.Str()
+    year = fields.Int()
+    rating = fields.Float()
+    genre_id = fields.Int()
+    director_id = fields.Int()
+
+    
+movie_schema = MovieSchema()
+
+    
+api = Api(app)
+movie_ns = api.namespace('movies')
+
+    
+@movies_ns.route('/')
+class MovieView(Resource):
+    new*
+    def get(self):
+        director_id = request.args.get('director_id')
+        genre_id = request.args.get('genre_id')
+        stmt = Movie.query
+        if director_id:
+            stmt = stmt.filter(Movie.director_id == director_id)
+        if genre_id:
+            stmt = stmt.filter(Movie.genre_id == genre_id)
+        movies = stmt.all()
+        return movie_schema.dump(movies, many=True), 200
+    
+    
+@movies_ns.route('/<int:mid>')
+class MovieView(Resource):
+    new*
+    def get(self, mid):
+        movies = Movie.query.get(mid)
+        if not movie:
+            return '', 404
+        return movie_schema.dump(movies), 200
+    
 
 
 if __name__ == '__main__':
