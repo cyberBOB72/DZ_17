@@ -49,12 +49,12 @@ movie_schema = MovieSchema()
 
     
 api = Api(app)
-movie_ns = api.namespace('movies')
+movies_ns = api.namespace('movies')
 
     
 @movies_ns.route('/')
 class MovieView(Resource):
-    new*
+    #new
     def get(self):
         director_id = request.args.get('director_id')
         genre_id = request.args.get('genre_id')
@@ -69,9 +69,9 @@ class MovieView(Resource):
     
 @movies_ns.route('/<int:mid>')
 class MovieView(Resource):
-    new*
+    #new
     def get(self, mid):
-        movies = Movie.query.get(mid)
+        movie = Movie.query.get(mid)
         if not movie:
             return '', 404
         return movie_schema.dump(movie), 200
